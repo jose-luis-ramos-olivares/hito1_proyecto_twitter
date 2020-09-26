@@ -1,6 +1,6 @@
 class TweetsController < ApplicationController
   before_action :set_tweet, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!
+  #before_action :authenticate_user!
   # GET /tweets
   # GET /tweets.json
   def index
@@ -40,14 +40,18 @@ class TweetsController < ApplicationController
   # PATCH/PUT /tweets/1
   # PATCH/PUT /tweets/1.json
   def update
-    respond_to do |format|
-      if @tweet.update(tweet_params)
-        format.html { redirect_to @tweet, notice: 'Tweet was successfully updated.' }
-        format.json { render :show, status: :ok, location: @tweet }
-      else
-        format.html { render :edit }
-        format.json { render json: @tweet.errors, status: :unprocessable_entity }
+    if current_user.admin? || @tweet.user.id == current_user.id
+      respond_to do |format|
+        if @tweet.update(tweet_params)
+          format.html { redirect_to @tweet, notice: 'Tweet was successfully updated.' }
+          format.json { render :show, status: :ok, location: @tweet }
+        else
+          format.html { render :edit }
+          format.json { render json: @tweet.errors, status: :unprocessable_entity }
+        end
       end
+    else
+      redirect_to tweets_path, notice: 'Only admins or the user who created the story can update'
     end
   end
 

@@ -10,9 +10,11 @@
   </head>
 
   <body>
-    <p class="notice"><p>"Bienvenido"</p><%= notice %></p>
+    <p class="notice"><%= notice %></p>
     <p class="alert"><%= alert %></p>
     <% if current_user %>
+      <%= flash[:alert] = "Bienvenido" %>
+      <br>
       <%= link_to "Log Out", destroy_user_session_path, method: :delete %>
     <% else %>
       <%= link_to "Log In", new_user_session_path %>
