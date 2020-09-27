@@ -6,7 +6,7 @@
   <thead>
     <tr>
       <th>Content</th>
-      <th>Photo</th>
+      <th>Profile Photo</th>
       <th>User</th>
       <th colspan="3"></th>
     </tr>
@@ -23,11 +23,30 @@
           <td><%= link_to 'Edit', edit_tweet_path(tweet) %></td>
           <td><%= link_to 'Destroy', tweet, method: :delete, data: { confirm: 'Are you sure?' } %></td>
         <% end %>
+        <td>
+          <span class="parent-likes">
+            <span class="like_count" <%= tweet.id %> > 
+              <%= tweet.get_likes.size %> &#128077
+            </span>
+            <a>
+                <div>
+                  <%= link_to like_tweet_path(tweet, 'unlike'), class: "unliked-btn",
+                  method: :put, remote: :true do %> Unliked </div>
+              <% end %>
+              <% else %>
+                <div>
+                  <%= link_to like_tweet_path(tweet, 'like'), class: "like-btn",
+                  method: :put, remote: :true do %> Like </div>
+              <% end %>
+            </a>
+          </span>
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
-
+<br>
+  <%= will_paginate @tweets, :previous_label => '', :next_label => 'Mostrar más tweets' %>
 <br>
 <% if current_user %>
   <%= link_to 'New Tweet', new_tweet_path %>

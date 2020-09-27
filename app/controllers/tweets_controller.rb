@@ -1,10 +1,21 @@
 class TweetsController < ApplicationController
   before_action :set_tweet, only: [:show, :edit, :update, :destroy]
   #before_action :authenticate_user!
+  respond_to :js, :html, :json
   # GET /tweets
   # GET /tweets.json
   def index
-    @tweets = Tweet.all
+    #@tweets = Tweet.paginate(page: params[:page], per_page: 50)
+    @tweets = Tweet.page(params[:page]).order('created_at DESC').paginate(page: params[:page], per_page: 1)
+  end
+
+  def like
+    @tweet = Tweet.find(params[:id])
+    if params[:format] == 'like'
+      @tweet.liked_by current_user
+    elsif params[:format] == 'unlike'
+      @tweet.unliked_by current_user
+    end
   end
 
   # GET /tweets/1

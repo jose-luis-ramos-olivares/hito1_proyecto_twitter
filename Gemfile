@@ -30,6 +30,8 @@ gem 'jbuilder', '~> 2.5'
 # Use ActiveStorage variant
 # gem 'mini_magick', '~> 4.8'
 gem 'devise'
+gem 'will_paginate', '~> 3.1.0'
+gem 'acts_as_votable'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
