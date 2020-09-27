@@ -6,7 +6,7 @@ class TweetsController < ApplicationController
   # GET /tweets.json
   def index
     #@tweets = Tweet.paginate(page: params[:page], per_page: 50)
-    @tweets = Tweet.page(params[:page]).order('created_at DESC').paginate(page: params[:page], per_page: 50)
+    @tweets = Tweet.page(params[:page]).order('created_at ASC').paginate(page: params[:page], per_page: 50)
   end
 
   def like
@@ -26,6 +26,7 @@ class TweetsController < ApplicationController
   # GET /tweets/new
   def new
     @tweet = Tweet.new
+    @users = User.pluck :profile_photo, :id
   end
 
   # GET /tweets/1/edit
@@ -51,7 +52,7 @@ class TweetsController < ApplicationController
   # PATCH/PUT /tweets/1
   # PATCH/PUT /tweets/1.json
   def update
-    if current_user.admin? || @tweet.user.id == current_user.id
+    if @tweet.user.id == current_user.id
       respond_to do |format|
         if @tweet.update(tweet_params)
           format.html { redirect_to @tweet, notice: 'Tweet was successfully updated.' }
