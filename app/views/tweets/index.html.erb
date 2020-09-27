@@ -2,7 +2,11 @@
 
 <h1>Tweets</h1>
 
-<table>
+<% if current_user %>
+  <%= link_to 'New Tweet', new_tweet_path %>
+<% end %>
+
+<!-- <table>
   <thead>
     <tr>
       <th>Content</th>
@@ -29,25 +33,40 @@
               <%= tweet.get_likes.size %> &#128077
             </span>
             <a>
-                <div>
-                  <%= link_to like_tweet_path(tweet, 'unlike'), class: "unliked-btn",
-                  method: :put, remote: :true do %> Unliked </div>
-              <% end %>
-              <% else %>
-                <div>
-                  <%= link_to like_tweet_path(tweet, 'like'), class: "like-btn",
-                  method: :put, remote: :true do %> Like </div>
-              <% end %>
+                <div> <%= link_to like_tweet_path(tweet, 'unlike'), class: "unlike-btn", method: :put, remote: :true do %> Unlike </div>
+                <% end %>
+                <% else %>
+                <div> <%= link_to like_tweet_path(tweet, 'like'), class: "like-btn", method: :put, remote: :true do %> Like </div>
+                <% end %>
             </a>
           </span>
         </td>
       </tr>
     <% end %>
   </tbody>
-</table>
+</table> -->
+
+<div class="row">
+  <% @tweets.reverse.each do |tweet| %>
+    <div class="col-sm-6 col-md-4">
+      <div class="thumbnail">
+        <%= link_to(image_tag(tweet.photo), tweet) if tweet.photo? %>
+        <div class="caption">
+          <h3><%= tweet.content %></h3>
+          <small><%= time_ago_in_words(tweet.created_at) %> ago</small>
+          <p><%= tweet.content.truncate(150)  %></p>
+          <p><%= link_to 'Show', tweet, class: "btn btn-primary" %>
+            <% if current_user&.id == tweet.user_id %>
+              <%= link_to 'Edit', edit_tweet_path(tweet), class: "btn btn-warning" %> 
+              <%= link_to 'Destroy', tweet, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %></p>
+            <% end %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+
 <br>
   <%= will_paginate @tweets, :previous_label => '', :next_label => 'Mostrar más tweets' %>
 <br>
-<% if current_user %>
-  <%= link_to 'New Tweet', new_tweet_path %>
-<% end %>
+

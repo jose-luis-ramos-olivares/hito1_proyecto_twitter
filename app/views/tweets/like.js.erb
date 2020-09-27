@@ -1,7 +1,7 @@
-$('.unliked-btn').on('ajax:success', function(){
+$('.unlike-btn').on('ajax:success', function(){
     $(this).parent().parent().find('.like_count')
     .html('<%= @tweet.get_likes.size %> &#128078');
-    $(this).closest('.unliked-btn').html('Unliked');
+    $(this).closest('.unlike-btn').html('Unlike');
 });
 
 $('.like-btn').on('ajax:success', function(){
