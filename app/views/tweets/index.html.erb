@@ -22,11 +22,11 @@
         <div class="caption">
           <h3><%= tweet.content.truncate(150) %></h3>
           <small><%= time_ago_in_words(tweet.created_at) %> ago</small>
-          <!-- <p><%= link_to 'Show', tweet, class: "btn btn-primary" %>
+          <p><%= link_to 'Show', tweet, class: "btn btn-primary" %>
             <% if current_user&.id == tweet.user_id %>
               <%= link_to 'Edit', edit_tweet_path(tweet), class: "btn btn-warning" %> 
               <%= link_to 'Destroy', tweet, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %></p>
-            <% end %> -->
+            <% end %>
             <br>
             <span class="parent-likes">
               <span class="like_count" <%= tweet.id %> > 
