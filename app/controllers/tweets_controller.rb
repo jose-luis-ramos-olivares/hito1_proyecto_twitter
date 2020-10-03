@@ -1,7 +1,7 @@
 class TweetsController < ApplicationController
   before_action :set_tweet, only: [:show, :edit, :update, :destroy]
-  before_action :authenticate_user!, only: :like
-  respond_to :js, :html, :json
+  before_action :authenticate_user!, except: :index
+  # respond_to :js, :html, :json
   # GET /tweets
   # GET /tweets.json
   def index
@@ -10,12 +10,27 @@ class TweetsController < ApplicationController
   end
 
   def like
-    @tweet = Tweet.find(params[:id])
-    if params[:format] == 'like'
-      @tweet.liked_by current_user
-    elsif params[:format] == 'unlike'
-      @tweet.unliked_by current_user
+    if current_user
+      @tweet = Tweet.find(params[:tweet_id])
+      if is_liked?
+        @tweet.remove_like(current_user)
+      else
+        @tweet.add_like(current_user)
+      end
+    else
+      redirect_to new_user_session_path
     end
+    redirect_to root_path
+  end
+
+  def retweet
+    if current_user
+      @tweet = Tweet.find(params[:tweet_id])
+      Tweet.create(content: @tweet.content , user_id: current_user.id, origin_tweet: @tweet.id)
+    else
+      redirect_to new_user_session_path
+    end
+    redirect_to root_path
   end
 
   # GET /tweets/1
@@ -37,7 +52,7 @@ class TweetsController < ApplicationController
   # POST /tweets.json
   def create
     @tweet = Tweet.new(tweet_params.merge(user: current_user))
-
+    @tweet.user_id = current_user.id
     respond_to do |format|
       if @tweet.save
         format.html { redirect_to @tweet, notice: 'Tweet was successfully created.' }
@@ -79,12 +94,17 @@ class TweetsController < ApplicationController
 
   private
     # Use callbacks to share common setup or constraints between actions.
+    
+    def is_liked?
+      Like.where(user: current_user.id, tweet: params[:tweet_id]).exists?
+    end
+    
     def set_tweet
       @tweet = Tweet.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def tweet_params
-      params.require(:tweet).permit(:content, :photo)
+      params.require(:tweet).permit(:content, :photo, :user_id, :origin_tweet)
     end
 end

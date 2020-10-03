@@ -1,8 +1,7 @@
 Rails.application.routes.draw do
   resources :tweets do
-    member do
-      put "like" => "tweets#like"
-    end
+    post 'like', to: 'tweets#like'
+    post 'retweet', to: 'tweets#retweet'
   end
   root 'tweets#index'
   devise_for :users, controllers: { registrations: 'users/registrations' }
