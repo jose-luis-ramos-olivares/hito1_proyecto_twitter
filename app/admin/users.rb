@@ -32,7 +32,15 @@ ActiveAdmin.register User do
   index do
     column :email
     column :user_name
-    column :tweet_id
+    column "Cantidad Tweets" do |i|
+      i.tweets.count
+    end
+    column "Cantidad Likes" do |i|
+      i.likes.count
+    end
+    column "Cantidad Retweets" do |i|
+      
+    end
     actions
   end
   

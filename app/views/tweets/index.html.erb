@@ -10,6 +10,12 @@
       <% end %>
     </div>
   </div>
+  <form class="form-inline">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search"
+    aria-label="Search" name="content">
+    <button class="btn btn-outline-success my-2 my-sm-0"
+    type="submit">Search</button>
+  </form>
 </div>
 
 <br>
@@ -21,19 +27,19 @@
         <%= image_tag(tweet.user.profile_photo, width: "40%") %> dice:
         <div class="caption">
           <% if tweet.origin_tweet.nil? %>
-            <h3><%= tweet.content.truncate(150) %></h3>
+            <h3><%= tweet.content %></h3>
           <% else %>
             <%= image_tag(tweet.original_tweet.user.profile_photo, width: "20%") %> <%= tweet.original_tweet.user.user_name %> dice:
             <div class="container mx-auto">
-              <%= tweet.content.truncate(150) %>
+              <%= tweet.content %>
             </div>
           <% end %>
           <small><%= time_ago_in_words(tweet.created_at) %> ago</small>
-            <!-- <p><%= link_to 'Show', tweet, class: "btn btn-primary" %>
+            <p><%= link_to 'Show', tweet, class: "btn btn-primary" %>
               <% if current_user&.id == tweet.user_id %>
                 <%= link_to 'Edit', edit_tweet_path(tweet), class: "btn btn-warning" %> 
                 <%= link_to 'Destroy', tweet, method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %></p>
-              <% end %> -->
+              <% end %>
             <br>
             <%= link_to 'Like', tweet_like_path(tweet), method: :post %> <%= tweet.likes.count %>
             <br>
@@ -44,7 +50,5 @@
   <% end %>
 </div>
 
-<br>
-  <%= will_paginate @tweets, :previous_label => '', :next_label => 'Mostrar más tweets' %>
-<br>
+
 

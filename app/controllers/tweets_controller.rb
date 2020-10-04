@@ -6,7 +6,14 @@ class TweetsController < ApplicationController
   # GET /tweets.json
   def index
     #@tweets = Tweet.paginate(page: params[:page], per_page: 50)
-    @tweets = Tweet.page(params[:page]).order('created_at ASC').paginate(page: params[:page], per_page: 50)
+    
+    if params[:content].present?
+      @tweets = Tweet.where('content = ?', params[:content])
+    else
+      @tweets = Tweet.all
+    end
+
+    #@tweets = Tweet.page(params[:page]).order('created_at ASC').paginate(page: params[:page], per_page: 50)
   end
 
   def like
@@ -37,6 +44,14 @@ class TweetsController < ApplicationController
     tag = Tag.find_by(name: params[:name])
     @tweets = tag.tweets
   end
+
+  # def dashboard
+  #   if params[:content].present?
+  #     @tweets = Tweet.where('content = ?', params[:content])
+  #   else
+  #     @tweets = Tweet.find_valid
+  #   end
+  # end
 
   # GET /tweets/1
   # GET /tweets/1.json
