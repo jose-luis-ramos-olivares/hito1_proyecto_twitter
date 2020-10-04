@@ -33,6 +33,11 @@ class TweetsController < ApplicationController
     redirect_to root_path
   end
 
+  def hashtags
+    tag = Tag.find_by(name: params[:name])
+    @tweets = tag.tweets
+  end
+
   # GET /tweets/1
   # GET /tweets/1.json
   def show
