@@ -1,8 +1,8 @@
 class Tweet < ApplicationRecord
   belongs_to :user
   has_many :likes, dependent: :destroy
-  #has_and_belongs_to_many :tags
-  has_many :tags
+  has_and_belongs_to_many :tags
+  #has_many :tags
   validates :content, presence: true
   # acts_as_votable
 
@@ -18,10 +18,6 @@ class Tweet < ApplicationRecord
 
   def original_tweet
     Tweet.find(self.origin_tweet)
-  end
-
-  def to_s
-    tweet_id
   end
 
   after_create do
