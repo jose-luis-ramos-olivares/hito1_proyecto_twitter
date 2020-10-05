@@ -5,15 +5,14 @@ class TweetsController < ApplicationController
   # GET /tweets
   # GET /tweets.json
   def index
+
     if params[:content].present?
       @tweets = Tweet.where('content = ?', params[:content])
     else
       @tweets = Tweet.all
     end
 
-    @tweets = Tweet.page(params[:page]).paginate(page: params[:page], per_page: 50)
-    # @tweets = Tweet.paginate(page: params[:page], per_page: 1)
-    # @tweets = Tweet.page(params[:page], per_page: 1)
+    @paginated_tweets = Tweet.page(params[:page]).paginate(page: params[:page], per_page: 50)
   end
 
   def like
