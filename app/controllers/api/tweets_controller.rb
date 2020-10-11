@@ -5,16 +5,27 @@ module Api
         before_action :set_tweet, only: [:show, :update, :destroy]
         skip_before_action :verify_authenticity_token
 
-        class Tweet < ::Tweet
-            def as_json(options = {})
-                super.merge(like_count: likes.count, retweets_count: origin_tweet)
-            end
-        end
+        # class Tweet < ::Tweet
+        #     def as_json(options = {})
+        #         super.merge(like_count: likes.count, retweets_count: origin_tweet)
+        #     end
+        # end
 
         respond_to :json
 
         def index
-            respond_with Tweet.all 
+            #respond_with Tweet.all 
+            @tweet = Tweet.last(50).map do |t|
+                {
+                    id: t.id,
+                    content: t.content,
+                    user_id: t.user_id,
+                    like_count: t.likes.count,
+                    retweets_count: t.origin_tweet
+                    #retwitted_from: t.nil
+                }
+            end
+            render json: @tweet
         end
 
         def show
