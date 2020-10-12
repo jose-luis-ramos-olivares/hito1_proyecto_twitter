@@ -12,8 +12,8 @@ PASSWORD: password
 PARA ENTRAR A LA API
 https://hito-uno-twitter.herokuapp.com/api/news
 
-VER TWEETS CON RANGO DE FECHA (FORMATO YYYY-MM-DD)
-https://hito-uno-twitter.herokuapp.com/api/:2020-09-01/:2020-10-11
+VER TWEETS CON RANGO DE FECHA
+https://hito-uno-twitter.herokuapp.com/api/:01-09-2020/:12-10-2020
 
 ACCESO PARA CREAR UN TWEET A TRAVES DE LA API Y VER TWEETS CON RANGO DE FECHAS
 USUARIO: hello

@@ -51,10 +51,7 @@ module Api
         end
 
         def between_dates
-            fecha1 = Date.parse(params[:fecha1])
-            fecha2 = Date.parse(params[:fecha2])
-
-            @tweets = Tweet.where(created_at:fecha1..fecha2)
+            @tweets = Tweet.where(created_at:(params[:fecha1].to_date)..(params[:fecha2].to_date))
             render json: @tweets
         end
 
